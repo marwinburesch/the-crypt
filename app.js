@@ -1,31 +1,14 @@
-const fs = require('fs')
+const { get, set, unset } = require('./lib/commands')
 const [command, key, value] = process.argv.slice(2)
 
-function get() {
-  console.log("a soul has been called:", key)
-  try {
-    const passwordsJSON = fs.readFileSync('./db.json', 'utf8');
-    const passwords = JSON.parse(passwordsJSON);
-    console.log(key, passwords[key])
-  } catch (error) {
 
-  }
-}
-
-function set() {
-  console.log("a new soul has entered the crypt", key, value)
-}
-
-function unset() {
-  console.log(key, 'unset')
-}
 
 if (command === "get") {
-  get()
+  get(key)
 } else if (command === "set") {
-  set()
+  set(key, value)
 } else if (command === "unset") {
-  unset()
+  unset(key)
 } else {
   console.log("this command is unknown")
 }
