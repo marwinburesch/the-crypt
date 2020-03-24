@@ -1,4 +1,4 @@
-const { get, set, unset } = require('./lib/queries/api');
+const { get, set, unset, getMasterPassword } = require('./lib/queries/api');
 const [command, key, value] = process.argv.slice(2);
 const { askForPassword } = require('./lib/questions')
 
@@ -10,6 +10,8 @@ async function run() {
     set(key, password);
   } else if (command === 'unset') {
     unset(key);
+  } else if (command === 'getMaster') {
+    getMasterPassword();
   } else {
     console.log('this command is unknown');
   }
