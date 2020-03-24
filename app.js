@@ -1,12 +1,17 @@
 const { get, set, unset } = require('./lib/queries/api');
 const [command, key, value] = process.argv.slice(2);
+const { askForPassword } = require('./lib/questions')
 
-if (command === 'get') {
+async function run() {
+  if (command === 'get') {
     get(key);
-} else if (command === 'set') {
-    set(key, value);
-} else if (command === 'unset') {
+  } else if (command === 'set') {
+    const password = await askForPassword(key)
+    set(key, password);
+  } else if (command === 'unset') {
     unset(key);
-} else {
+  } else {
     console.log('this command is unknown');
+  }
 }
+run()
