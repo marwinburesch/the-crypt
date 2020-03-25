@@ -2,6 +2,7 @@ const { get, set, unset, reset } = require('./lib/queries/api');
 const [command, key] = process.argv.slice(2);
 const { askForPassword, askForMasterPassword } = require('./lib/questions');
 const { verifyHash } = require('./lib/crypto');
+const { readMasterPassword } = require('./lib/queries/dbaccess');
 
 async function run() {
   const answeredMasterPassword = await askForMasterPassword();
