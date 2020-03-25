@@ -1,12 +1,25 @@
-const { get, set, unset, getMasterPassword } = require('./lib/queries/api');
-const [command, key, value] = process.argv.slice(2);
-const { askForPassword } = require('./lib/questions')
+const { get, set, unset, reset } = require('./lib/queries/api');
+const [command, key] = process.argv.slice(2);
+const { askForPassword, askForMasterPassword } = require('./lib/questions');
+const { verifyHash } = require('./lib/crypto');
 
 async function run() {
+  const answeredMasterPassword = await askForMasterPassword();
+
+  if (command === 'reset') {
+    return reset(answeredMasterPassword);
+  }
+  const masterPassword = readMasterPassword();
+
+  if (!verifyHash(answeredMasterPassword, masterPassword)) {
+    console.error('UNACCEPTABLE!!!');
+    return;
+  }
+
   if (command === 'get') {
     get(key);
   } else if (command === 'set') {
-    const password = await askForPassword(key)
+    const password = await askForPassword(key);
     set(key, password);
   } else if (command === 'unset') {
     unset(key);
@@ -16,4 +29,4 @@ async function run() {
     console.log('this command is unknown');
   }
 }
-run()
+run();
